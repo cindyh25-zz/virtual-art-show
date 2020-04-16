@@ -17,7 +17,7 @@ include("includes/head.php");
     </div>
   </div>
 
-  <h2>Submit Your Artwork</h2>
+  <h2>About the Show</h2>
 
   <form></form>
 
