@@ -95,6 +95,7 @@ images (
   id: INTEGER {PK, NOT, AI, U},
   file_name: TEXT {NOT},
   file_ext: TEXT {NOT},
+  title: TEXT,
   artist_id: INTEGER,
   width: TEXT,
   height: TEXT,
@@ -146,17 +147,37 @@ tag_types (
 ```
 SELECT * FROM images;
 ```
-- Select image + information/metadata for an image with specific id
+- Select image for an image with `id = image_id`
 ```
+SELECT file_name, file_ext FROM images WHERE id = image_id;
 
 ```
-
-- Select images with certain combination of tags
+- Select  information/metadata for an image with `id = image_id`
+```
+SELECT artists.name, images.width, images.height, images.description FROM images LEFT INNER JOIN artists ON
+images.artist_id = artists.id WHERE images.id = image_id;
+```
+- Select tags for an image with `id = image_id`
+```
+SELECT tags.name FROM tags INNER JOIN image_tags ON image_tags.tag_id = tags.id INNER JOIN images ON image_tags.image_id = images.id;
+```
+- Select images with certain tag
+```
+SELECT images.file_name, images_file_ext FROM images INNER JOIN image_tags ON image_tags.tag_id = tags.id INNER JOIN images ON image_tags.image_id = images.id WHERE image_tags.tag_id = tag_id GROUP BY images.id;
+```
 
 - Insert image
+```
+INSERT INTO images (id, file_name, file_ext, ...) VALUES (id, file_name, file_ext, ...);
 
-- Delete image
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (id, image_id, tag_id);
+```
+- Delete image with `id = id`
+```
+DELETE FROM images WHERE id = id;
 
+DELETE FROM image_tags WHERE image_id = id;
+```
 
 ## Code Planning (Milestone 1)
 > Plan what top level PHP pages you'll need.
