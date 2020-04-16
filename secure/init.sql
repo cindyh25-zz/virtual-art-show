@@ -5,6 +5,7 @@ CREATE TABLE images (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
   file_name TEXT NOT NULL,
   file_ext TEXT NOT NULL,
+  title TEXT,
   artist_id INTEGER,
   width TEXT,
   height TEXT,
@@ -36,42 +37,245 @@ CREATE TABLE tag_types (
 -- TODO: initial seed data
 -- INSERT INTO `examples` (id,name) VALUES (1, 'example-1');
 -- INSERT INTO `examples` (id,name) VALUES (2, 'example-2');
-INSERT INTO images (id, file_name, file_ext)
+-- IMAGES
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (1, "1.jpg", "jpg");
-INSERT INTO images (id, file_name, file_ext)
+  (
+    1,
+    "1.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (2, "2.jpg", "jpg");
-INSERT INTO images (id, file_name, file_ext)
+  (
+    2,
+    "2.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (3, "3.jpg" "jpg");
-INSERT INTO images (id, file_name, file_ext)
+  (
+    3,
+    "3.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (4, "4.jpg", "jpg");
-INSERT INTO images (id, file_name, file_ext)
+  (
+    4,
+    "4.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (5, "5.jpg", "jpg");
-INSERT INTO images (id, file_name, file_ext)
+  (
+    5,
+    "5.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (6, "6.jpg", "jpg");
-INSERT INTO images (id, file_name, file_ext)
+  (
+    6,
+    "6.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (7, "7.jpg", "jpg");
-INSERT INTO images (id, file_name, file_ext)
+  (
+    7,
+    "7.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (8, "8.jpg", "jpg");
-INSERT INTO images (id, file_name, file_ext)
+  (
+    8,
+    "8.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (9, "9.jpg", "jpg");
-INSERT INTO images (id, file_name, file_ext)
+  (
+    9,
+    "9.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
 VALUES
-  (10, "10.jpg" "jpg");
+  (
+    10,
+    "10.jpg",
+    "jpg",
+    "Untitled",
+    1,
+    "11",
+    "14",
+    "A nice painting",
+    "cindyhuang.me"
+  );
+-- TAG TYPES
 INSERT INTO tag_types (id, name)
 VALUES
-  (1, "class");
+  (1, "Class");
 INSERT INTO tag_types (id, name)
 VALUES
-  (2, "medium");
+  (2, "Medium");
+-- TAGS
 INSERT INTO tags (id, tag, type_id)
 VALUES
   (1, "AP Studio", 1);
@@ -105,40 +309,45 @@ VALUES
 INSERT INTO tags (id, tag, type_id)
 VALUES
   (11, "Ink", 2);
--- 3 tags for one image
+-- IMAGE TAGS
+  -- 3 tags for one image
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
   (1, 1, 2);
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 1, 9);
+  (2, 1, 9);
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 1, 11);
+  (3, 1, 11);
 -- multiple tags per image
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 2, 11);
+  (4, 2, 11);
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 2, 3);
+  (5, 2, 3);
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 3, 5);
+  (6, 3, 5);
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 3, 10);
+  (7, 3, 10);
 -- other image tags
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 4, 10);
+  (8, 4, 10);
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 5, 4);
+  (9, 5, 4);
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 6, 7);
+  (10, 6, 7);
 INSERT INTO image_tags (id, image_id, tag_id)
 VALUES
-  (1, 8, 9);
+  (11, 8, 9);
+-- ARTISTS
+INSERT INTO artists (id, name)
+VALUES
+  (1, "Cindy Huang");
 COMMIT;
