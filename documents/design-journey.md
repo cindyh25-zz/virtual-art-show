@@ -143,8 +143,13 @@ tag_types (
 > Using your request plan above, plan all of the queries you need.
 
 - Select all images
-
+```
+SELECT * FROM images;
+```
 - Select image + information/metadata for an image with specific id
+```
+
+```
 
 - Select images with certain combination of tags
 
