@@ -17,31 +17,40 @@ include("includes/head.php");
     </div>
   </div>
 
-  <div class="gallery">
-    <div class="column">
-      <img src="uploads/images/1.jpg">
-      <img src="uploads/images/2.jpg">
-      <img src="uploads/images/3.jpg">
-    </div>
+  <?php
 
-    <div class="column">
-      <img src="uploads/images/4.jpg">
-      <img src="uploads/images/5.jpg">
-      <img src="uploads/images/6.jpg">
-    </div>
+  function display_column($array)
+  {
+    echo '<div class="column">';
+    foreach ($array as $image) {
+      echo '<img src="uploads/images/' . $image["id"] . "." . $image["file_ext"] . '">';
+    }
+    echo '</div>';
+  }
 
-    <div class="column">
-      <img src="uploads/images/7.jpg">
-      <img src="uploads/images/8.jpg">
-      <img src="uploads/images/9.jpg">
-    </div>
+  function display_images($db, $num_cols)
+  {
+    $records = exec_sql_query($db, "SELECT * FROM images")->fetchAll(PDO::FETCH_ASSOC);
+    $num_records = count($records);
+    $num_rows = $num_records / $num_cols;
+    $col = 0;
+    $col_start = 0;
+    echo '<div class="gallery">';
+    while ($col < $num_cols) {
+      // dealing with remainders
+      if ($num_records - ($col * $num_rows) < $num_rows) {
+        $num_rows += $num_records - ($col * $num_rows);
+      }
+      // display one column of images
+      display_column(array_slice($records, $col_start, $num_rows));
+      $col += 1;
+      $col_start += $num_rows;
+    }
+    echo '</div>';
+  }
 
-    <div class="column">
-      <img src="uploads/images/10.jpg">
-      <img src="uploads/images/1.jpg">
-      <img src="uploads/images/2.jpg">
-    </div>
-  </div>
+  display_images($db, 3);
+  ?>
 
 </body>
 

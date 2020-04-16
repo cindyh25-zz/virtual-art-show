@@ -1,5 +1,6 @@
 body {
  margin: 4em;
+
 }
 
 .topnav {
@@ -17,6 +18,7 @@ body {
   padding: 1em;
   text-decoration: none;
   top: 1em;
+  font-family: sans-serif;
 }
 
 .button {
@@ -33,7 +35,7 @@ body {
 
 .column {
   flex: 25%;
-  max-width: 20%;
+  max-width: 30%;
   padding: 0 8px;
 }
 
@@ -43,20 +45,51 @@ body {
   width: 100%;
 }
 
-/* #gallery{
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 4px;
+.forminput {
+  display: block;
+  margin: 2em 0;
 }
 
-.row{
-  flex: 25%;
-  max-height: 25%;
-  padding: 0 4px;
+label{
+  font-weight: bold;
+  display: block;
+  margin: 0.5em 0;
 }
 
-.row img {
-  margin-top: 8px;
-  vertical-align: middle;
-  height: 100%;
-} */
+input[type="text"], [type="url"]{
+  border: none;
+  border-bottom: 1px solid #777777;
+  padding: 0.5em;
+}
+input[type="text"]:focus, [type="url"]:focus{
+  border: none;
+  border-bottom: 4px solid #000000;
+}
+
+input {
+  margin-bottom: 1em;
+  width: 40%;
+}
+
+textarea {
+  border: 1px solid #777777;
+  padding: 1em;
+  margin: 1em 0;
+}
+
+.inline {
+  display: inline;
+}
+
+input.smallinput {
+  width: 120px;
+}
+
+input[type="submit"] {
+  background-color: white;
+  border: 2px solid #000000;
+  padding: 1em 2em;
+  width: auto;
+  font-weight: bold;
+  border-radius: 4px;
+}

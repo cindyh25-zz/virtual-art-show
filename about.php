@@ -8,7 +8,9 @@ include("includes/head.php");
 
 <body>
 
-  <h1>Virtual Art Show</h1>
+  <a href="index.php">
+    <h1>Virtual Art Show</h1>
+  </a>
 
   <div class="topnav">
     <div id="links">
