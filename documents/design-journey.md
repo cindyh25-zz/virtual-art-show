@@ -29,6 +29,28 @@ The other audience would be the art teachers and students who want to display th
 > Document your design process. Show us the evolution of your design from your first idea (sketch) to design you wish to implement (sketch). Show us the process you used to organize content and plan the navigation (card sorting), if applicable.
 > Label all images. All labels must be visible in VS Code's Markdown Preview.
 > Clearly label the final design.
+### Full gallery design
+![Home screen sketch](/documents/homedesign.jpg)
+I explored different layouts to view all of the images in the gallery. I decided to go with a grid that shows the whole images but is not categorized, since I felt the categorization functionality can already be achieved through filtering by tags.
+
+### Filtering by tags
+![Filter by tags sketch](/documents/tags.jpg)
+I chose the third iteration of a side menu with tags so that the tags can be clearly categorized by type. The tags would also be easily accessible if placed in a side menu rather than at the top.
+
+### Viewing single image
+![Full size image view sketch](/documents/singleimg.jpg)
+Above, I thought about what content is needed when displaying a single artwork based on the target audiences' desired outline above. I decided to go with a simple, straightforward view with the art and description side by side. Since people might also want to browse all images without returning to the main gallery each time, I think it would help to allow users to click through them at full size using arrows buttons.
+
+### Adding an image
+![Adding image flow sketch](/documents/adddesign.jpg)
+This is a flow where users can add an image. Since there is quite a bit of (optional) information they can add, I decided to separate it into a different page. This also makes sure it does not detract from the focus on the images in the home screen.
+
+### Deleting an image
+![Deleting image entry point sketch](/documents/deletedesign.jpg)
+Deleting should be more of a hidden action, so I decided to make the entry point inside a options menu in the full size view of each image.
+
+### FINAL DESIGN
+![Final design sketch](/documents/finaldesign.jpg)
 
 
 ## Design Patterns (Milestone 1)
@@ -53,6 +75,8 @@ It also follows existing design patterns for the single image view of having the
   - Type: GET, string param URL
   - Params: id _or_ image_id (images.id in DB)
 - Request: submit an artwork
+  - Type: POST, form
+- Request: delete an artwork
   - Type: POST, form
 - Request: view images with certain tags
   - Type: POST, form
@@ -118,9 +142,15 @@ tag_types (
 > Plan your database queries. You may use natural language, pseudocode, or SQL.
 > Using your request plan above, plan all of the queries you need.
 
-Select all images:
-```
-SELECT
+- Select all images
+
+- Select image + information/metadata for an image with specific id
+
+- Select images with certain combination of tags
+
+- Insert image
+
+- Delete image
 
 
 ## Code Planning (Milestone 1)
