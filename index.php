@@ -8,13 +8,27 @@ include("includes/head.php");
 
 <body>
 
-  <h1>Virtual Art Show</h1>
+  <?php
+  $about_css = "inactive";
+  $submit_css = "inactive";
+  include("includes/header.php");
 
-  <div class="topnav">
-    <div id="links">
-      <a href="about.php">About</a>
-      <a href="add.php" class="button">Submit Artwork</a>
-    </div>
+  // function filter_params($param, $val)
+  // {
+
+  //   http_build_query(array($param => $val));
+  // }
+
+  ?>
+
+  <!-- <div class="filters">
+    <h3>Filter</h3>
+    <h4>Classes</h4>
+    <a href="index.php?">AP Studio</a>
+  </div> -->
+
+  <div class="overlay">
+
   </div>
 
   <?php
