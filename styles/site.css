@@ -5,19 +5,24 @@ body {
 
 /* TEXT STYLES */
 h1 {
-  font-family: Didot, serif;
+  font-family: "Didot", serif;
 }
 h1#pagetitle{
   display: inline;
+}
+h3 {
+  margin: 1em 0 0 0;
 }
 a:visited{
   color: inherit;
 }
 a {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   text-decoration: none;
 }
 p {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  margin: 0.5em 0;
 }
 
 /* SITE STRUCTURE */
@@ -37,7 +42,6 @@ p {
   padding: 0.5em;
   text-decoration: none;
   top: 1em;
-  font-family: sans-serif;
   transition: .4s cubic-bezier(0.71, -0.32, 0.38, 1.32)
 }
 #links a.inactive{
@@ -87,13 +91,46 @@ p {
   vertical-align: middle;
   width: 100%;
 }
-
-.overlay {
-  position: absolute;
+.hidden{
+  display:none;
+}
+.visible{
+  display:block;
+}
+#overlay-wrapper {
+  position: fixed;
   z-index:100;
   background-color:white;
-  width:100%;
   height:100%;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+ /* #overlay{
+  display: none;
+} */
+.overlay {
+  display:flex;
+  width: 75%;
+  margin: 5% auto;
+
+}
+
+.large-img {
+ width: 50%;
+ margin-right: 10%;
+}
+.large-img img{
+  width:100%;
+}
+.img-info {
+  width: 40%;
+
+}
+.metadata {
+  font-size: 12px;
+  color: #777777;
 }
 
 /* FORM STYLE */

@@ -26,18 +26,72 @@ include("includes/head.php");
     <h4>Classes</h4>
     <a href="index.php?">AP Studio</a>
   </div> -->
+  <?php
 
-  <div class="overlay">
+  // show enlarged image as an overlay
+  function show_overlay($id, $db)
+  {
+    $art_sql = "SELECT * FROM images WHERE (id = :img_id )";
+    $art_params = array(
+      ':img_id' => strval($id)
+    );
+    $art_record = exec_sql_query($db, $art_sql, $art_params)->fetchAll(PDO::FETCH_ASSOC)[0];
+    $file = $art_record['id'] . '.' . $art_record['file_ext'];
+    $title = $art_record['title'];
+    $description = $art_record['description'];
+    $size = $art_record['width'] . ' x ' . $art_record['height'] . ' in.';
+    $artist_id = $art_record['artist_id'];
 
-  </div>
+    $artist_sql = "SELECT name FROM artists WHERE (id = :id)";
+    $artist_params = array(
+      ':id' => strval($artist_id)
+    );
+    $artist = exec_sql_query($db, $artist_sql, $artist_params)->fetchAll(PDO::FETCH_ASSOC)[0]['name'];
+  ?>
+    <div id="overlay-wrapper">
+      <div class="overlay">
+        <div class="large-img">
+          <img src="uploads/images/<?php echo $file; ?>">
+        </div>
+        <div class="img-info">
+          <h3>Title</h3>
+          <p><?php echo $title; ?></p>
+          <h3>Artist</h3>
+          <p><?php echo $artist; ?></p>
+          <a href="#">
+            <p class="metadata url">cindyhuang.me</p>
+          </a>
+          <p class="metadata"><?php echo $size; ?></p>
+          <p class="metadata">AP Studio Art</p>
+          <p class="metadata">Watercolor</p>
+          <h3>Artist's Statement</h3>
+          <p><?php echo $description; ?><p>
+        </div>
+      </div>
+    </div>
+
 
   <?php
 
-  function display_column($array)
+  }
+  // check for http param
+  if (isset($_GET['img_id'])) {
+    show_overlay(intval($_GET['img_id']), $db);
+    exit();
+  }
+  ?>
+
+  <!-- div to replace with single image overlay -->
+  <div id="replace">
+  </div>
+
+  <?php
+  // display each image in a column
+  function display_column($array, $db)
   {
     echo '<div class="column">';
     foreach ($array as $image) {
-      echo '<img src="uploads/images/' . $image["id"] . "." . $image["file_ext"] . '">';
+      echo '<img onclick="fetch_image(' . $image["id"] . ')" class="galleryImg" src="uploads/images/' . $image["id"] . "." . $image["file_ext"] . '">';
     }
     echo '</div>';
   }
@@ -56,7 +110,7 @@ include("includes/head.php");
         $num_rows += $num_records - ($col * $num_rows);
       }
       // display one column of images
-      display_column(array_slice($records, $col_start, $num_rows));
+      display_column(array_slice($records, $col_start, $num_rows), $db);
       $col += 1;
       $col_start += $num_rows;
     }
@@ -66,6 +120,9 @@ include("includes/head.php");
   display_images($db, 3);
   ?>
 
+
+  <script type="text/javascript" src="scripts/gallery.js"></script>
+  <script type="text/javascript" src="scripts/jquery-3.4.1.min.js"></script>
 </body>
 
 </html>

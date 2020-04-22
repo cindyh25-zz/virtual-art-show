@@ -54,11 +54,11 @@ VALUES
     1,
     "1.jpg",
     "jpg",
-    "Untitled",
+    "Floral embroidery",
     1,
     "11",
     "14",
-    "A nice painting",
+    "Orange Flower and Bee",
     "cindyhuang.me"
   );
 INSERT INTO images (
@@ -77,11 +77,11 @@ VALUES
     2,
     "2.jpg",
     "jpg",
-    "Untitled",
+    "Floaral Embroidery",
     1,
-    "11",
-    "14",
-    "A nice painting",
+    "5",
+    "5",
+    "Some flowers",
     "cindyhuang.me"
   );
 INSERT INTO images (
@@ -100,11 +100,11 @@ VALUES
     3,
     "3.jpg",
     "jpg",
-    "Untitled",
+    "Lemon Embroidery",
     1,
-    "11",
-    "14",
-    "A nice painting",
+    "5",
+    "5",
+    "A cool lemon",
     "cindyhuang.me"
   );
 INSERT INTO images (
@@ -123,11 +123,11 @@ VALUES
     4,
     "4.jpg",
     "jpg",
-    "Untitled",
+    "Figure drawing",
     1,
-    "11",
+    "28",
     "14",
-    "A nice painting",
+    "A drawing of my teacher Mr. Hardy",
     "cindyhuang.me"
   );
 INSERT INTO images (
@@ -146,11 +146,11 @@ VALUES
     5,
     "5.jpg",
     "jpg",
-    "Untitled",
+    "Mural",
     1,
     "11",
     "14",
-    "A nice painting",
+    "A nice painting on the wall",
     "cindyhuang.me"
   );
 INSERT INTO images (
@@ -169,11 +169,11 @@ VALUES
     6,
     "6.jpg",
     "jpg",
-    "Untitled",
+    "~Reflections~",
     1,
-    "11",
-    "14",
-    "A nice painting",
+    "24",
+    "12",
+    "Still life",
     "cindyhuang.me"
   );
 INSERT INTO images (
@@ -192,11 +192,11 @@ VALUES
     7,
     "7.jpg",
     "jpg",
-    "Untitled",
+    "Playground",
     1,
-    "11",
-    "14",
-    "A nice painting",
+    "24",
+    "17",
+    "Pencil drawing of a playground",
     "cindyhuang.me"
   );
 INSERT INTO images (
@@ -215,11 +215,11 @@ VALUES
     8,
     "8.jpg",
     "jpg",
-    "Untitled",
+    "Roses",
     1,
-    "11",
-    "14",
-    "A nice painting",
+    "18",
+    "12",
+    "A nice painting of roses",
     "cindyhuang.me"
   );
 INSERT INTO images (
@@ -238,11 +238,11 @@ VALUES
     9,
     "9.jpg",
     "jpg",
-    "Untitled",
+    "Succulents",
     1,
-    "11",
-    "14",
-    "A nice painting",
+    "9",
+    "12",
+    "A nice painting of plants",
     "cindyhuang.me"
   );
 INSERT INTO images (
@@ -261,11 +261,11 @@ VALUES
     10,
     "10.jpg",
     "jpg",
-    "Untitled",
+    "Tunnel Book",
     1,
-    "11",
-    "14",
-    "A nice painting",
+    "6",
+    "4",
+    "Paper book",
     "cindyhuang.me"
   );
 -- TAG TYPES
