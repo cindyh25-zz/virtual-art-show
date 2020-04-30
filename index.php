@@ -34,18 +34,25 @@ include("includes/head.php");
 
   <?php
 
-  // show enlarged image as an overlay
-
-  // check for http param
-  // if (isset($_GET['img_id'])) {
-  //   show_overlay(intval($_GET['img_id']), $db);
-  //   // exit();
-  // }
-
   if (isset($_GET['tag_id'])) {
     display_images(get_tag_images(intval($_GET['tag_id']), $db), 3);
-
     exit();
+  }
+
+  // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (isset($_POST['delete'])) {
+    $deleteid = filter_input(INPUT_POST, 'delete', FILTER_SANITIZE_NUMBER_INT);
+    $deletesql = 'DELETE FROM images WHERE id = :id';
+    $deleteparams = array(
+      ':id' => $deleteid
+    );
+    exec_sql_query($db, $deletesql, $deleteparams);
+
+    $deletetagsql = 'DELETE FROM image_tags WHERE image_id = :id';
+    $deletetagparams = array(
+      ':id' => $deleteid
+    );
+    exec_sql_query($db, $deletesql, $deleteparams);
   }
 
   ?>

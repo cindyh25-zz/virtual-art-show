@@ -61,7 +61,7 @@
         <div class="modalcontent">
           <p>Are you sure you want to delete this artwork?</p>
           <form method="post" id="deleteform" action="index.php">
-            <input type="submit" value="I'm sure">
+            <button name='delete' value="<?php echo $id; ?>">I'm sure</button>
           </form>
         </div>
       </div>
