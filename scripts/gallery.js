@@ -11,3 +11,22 @@ function fetch_image(imgID) {
   );
 
 }
+
+function closeOverlay() {
+  alert("hi");
+  document.getElementById("overlay-wrapper").style.display = "none";
+}
+
+function showSideMenu() {
+  document.getElementById("sidemenu").style.display = "inline-block";
+  document.getElementById("menuicon").style.display = "none";
+}
+
+function hideSideMenu() {
+
+  document.getElementById("sidemenu").style.display = "none";
+}
+
+function showSettings() {
+  document.getElementById("settingscontent").style.display = "inline-block";
+}

@@ -8,27 +8,35 @@ include("includes/head.php");
 
 <body>
 
-  <?php
-  $about_css = "inactive";
-  $submit_css = "inactive";
-  include("includes/header.php");
 
-  // function filter_params($param, $val)
-  // {
-
-  //   http_build_query(array($param => $val));
-  // }
-
-  ?>
-
-  <!-- <div class="filters">
-    <h3>Filter</h3>
-    <h4>Classes</h4>
-    <a href="index.php?">AP Studio</a>
-  </div> -->
   <?php
 
-  // show enlarged image as an overlay
+  function get_tag_images($tag_id, $db)
+  {
+    $sql = "SELECT images.id, images.file_ext FROM images INNER JOIN image_tags ON image_tags.image_id = images.id INNER JOIN tags ON image_tags.tag_id = tags.id WHERE image_tags.tag_id = :tag_id";
+    $params = array(
+      ":tag_id" => $tag_id
+    );
+
+    return exec_sql_query($db, $sql, $params)->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  function get_all_images($db)
+  {
+    return exec_sql_query($db, "SELECT * FROM images")->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  function print_tags($tags)
+  {
+    echo '<p>';
+    foreach ($tags as $tag) {
+      $label = $tag['tag'];
+
+      echo '<a class="taglink" href="index.php?' . http_build_query(array("tag_id" => $tag['id'])) . '">' . $label . '</a>';
+    }
+    echo '</p>';
+  }
+
   function show_overlay($id, $db)
   {
     $art_sql = "SELECT * FROM images WHERE (id = :img_id )";
@@ -37,7 +45,7 @@ include("includes/head.php");
     );
     $art_record = exec_sql_query($db, $art_sql, $art_params)->fetchAll(PDO::FETCH_ASSOC)[0];
     $file = $art_record['id'] . '.' . $art_record['file_ext'];
-    $title = $art_record['title'];
+    $art_title = $art_record['title'];
     $description = $art_record['description'];
     $size = $art_record['width'] . ' x ' . $art_record['height'] . ' in.';
     $artist_id = $art_record['artist_id'];
@@ -47,78 +55,153 @@ include("includes/head.php");
       ':id' => strval($artist_id)
     );
     $artist = exec_sql_query($db, $artist_sql, $artist_params)->fetchAll(PDO::FETCH_ASSOC)[0]['name'];
+
+    $tags_sql = "SELECT tags.tag, tags.id FROM tags INNER JOIN image_tags ON image_tags.tag_id = tags.id INNER JOIN images ON image_tags.image_id = images.id WHERE images.id = :imgid";
+    $tags_params = array(
+      ":imgid" => $id
+    );
+    $tags = exec_sql_query($db, $tags_sql, $tags_params)->fetchAll(PDO::FETCH_ASSOC);
   ?>
     <div id="overlay-wrapper">
       <div class="overlay">
+        <div id="Xicon"><a href="index.php"><img class="iconsmall" src="documents/X.png"></a></div>
+        <!-- Original icon made by Cindy Huang -->
+
         <div class="large-img">
           <img src="uploads/images/<?php echo $file; ?>">
         </div>
         <div class="img-info">
-          <h3>Title</h3>
-          <p><?php echo $title; ?></p>
-          <h3>Artist</h3>
-          <p><?php echo $artist; ?></p>
-          <a href="#">
-            <p class="metadata url">cindyhuang.me</p>
-          </a>
-          <p class="metadata"><?php echo $size; ?></p>
-          <p class="metadata">AP Studio Art</p>
-          <p class="metadata">Watercolor</p>
-          <h3>Artist's Statement</h3>
-          <p><?php echo $description; ?><p>
+
+          <div id="settings">
+            <div id="optionsicon">
+              <img class="iconsmall" src="documents/options.png" onclick="showSettings()">
+            </div>
+            <!-- Original icon made by Cindy Huang -->
+
+            <div id="settingscontent">
+              <p class="red">Delete image</p>
+              <p>Add tags</p>
+              <p>Remove tags</p>
+            </div>
+          </div>
+
+
+          <div id="text">
+            <h3>Title</h3>
+            <p><?php echo $art_title; ?></p>
+            <h3>Artist</h3>
+            <p><?php echo $artist; ?></p>
+            <a href="#">
+              <p class="metadata url">cindyhuang.me</p>
+            </a>
+            <p class="metadata"><?php echo $size; ?></p>
+            <?php print_tags($tags); ?>
+            <h3>Artist's Statement</h3>
+            <p><?php echo $description; ?><p>
+          </div>
+
         </div>
       </div>
     </div>
 
+  <?php
+  }
+  $about_css = "inactive";
+  $submit_css = "inactive";
+  include("includes/header.php");
+  ?>
 
   <?php
 
-  }
+  // show enlarged image as an overlay
+
   // check for http param
   if (isset($_GET['img_id'])) {
     show_overlay(intval($_GET['img_id']), $db);
+    // exit();
+  }
+
+  if (isset($_GET['tag_id'])) {
+    display_images(get_tag_images(intval($_GET['tag_id']), $db), 3);
+
     exit();
   }
+
   ?>
 
   <!-- div to replace with single image overlay -->
   <div id="replace">
   </div>
 
-  <?php
-  // display each image in a column
-  function display_column($array, $db)
-  {
-    echo '<div class="column">';
-    foreach ($array as $image) {
-      echo '<img onclick="fetch_image(' . $image["id"] . ')" class="galleryImg" src="uploads/images/' . $image["id"] . "." . $image["file_ext"] . '">';
-    }
-    echo '</div>';
-  }
 
-  function display_images($db, $num_cols)
-  {
-    $records = exec_sql_query($db, "SELECT * FROM images")->fetchAll(PDO::FETCH_ASSOC);
-    $num_records = count($records);
-    $num_rows = $num_records / $num_cols;
-    $col = 0;
-    $col_start = 0;
-    echo '<div class="gallery">';
-    while ($col < $num_cols) {
-      // dealing with remainders
-      if ($num_records - ($col * $num_rows) < $num_rows) {
-        $num_rows += $num_records - ($col * $num_rows);
+
+
+  <div id="gallery-wrapper">
+    <div id="menuicon"><img class="icon" src="documents/filtericon.png" onclick="showSideMenu()"></div>
+    <!-- Original icon created by Cindy Huang-->
+
+    <!-- tags left column -->
+    <div id="sidemenu">
+      <!-- <img class="icon" src="documents/X.png" onclick="hideSideMenu()"> -->
+      <!-- Original icon created by Cindy Huang-->
+      <h2>Filter</h2>
+      <h3>Class</h3>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 1)); ?>">AP Studio Art</a>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 2)); ?>">Advanced Art Honors</a>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 3)); ?>">Visual Art 1</a>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 4)); ?>">Visual Art 2</a>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 5)); ?>">Foundations of Art</a>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 6)); ?>">Intro to Painting</a>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 7)); ?>">Photography</a>
+
+      <h3>Medium</h3>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 8)); ?>">Acrylic</a>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 9)); ?>">Watercolor</a>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 10)); ?>">Pencil</a>
+      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 11)); ?>">Ink</a>
+
+    </div>
+
+    <?php
+    // display each image in a column
+    function display_column($array)
+    {
+      echo '<div class="column">';
+      foreach ($array as $image) {
+
+        $filename = $image['id'] . "." . $image['file_ext'];
+    ?>
+        <a href="index.php?<?php echo http_build_query(array("img_id" => $image['id'])); ?>">
+          <img class="galleryImg" src="uploads/images/<?php echo $filename; ?>"></a>
+    <?php }
+      echo '</div>';
+    }
+
+
+    function display_images($records, $num_cols)
+    {
+      $num_records = count($records);
+      $num_rows = $num_records / $num_cols + 1;
+      $col = 0;
+      $col_start = 0;
+      echo '<div class="gallery">';
+      while ($col < $num_cols) {
+        // dealing with remainders
+        if ($num_records - ($col * $num_rows) < $num_rows) {
+          $num_rows += $num_records - ($col * $num_rows);
+        }
+        // display one column of images
+        display_column(array_slice($records, $col_start, $num_rows));
+        $col += 1;
+        $col_start += $num_rows;
       }
-      // display one column of images
-      display_column(array_slice($records, $col_start, $num_rows), $db);
-      $col += 1;
-      $col_start += $num_rows;
+      echo '</div>';
     }
-    echo '</div>';
-  }
 
-  display_images($db, 3);
-  ?>
+    display_images(get_all_images($db), 3);
+
+    ?>
+  </div>
 
 
   <script type="text/javascript" src="scripts/gallery.js"></script>
