@@ -26,86 +26,7 @@ include("includes/head.php");
     return exec_sql_query($db, "SELECT * FROM images")->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  function print_tags($tags)
-  {
-    echo '<p>';
-    foreach ($tags as $tag) {
-      $label = $tag['tag'];
 
-      echo '<a class="taglink" href="index.php?' . http_build_query(array("tag_id" => $tag['id'])) . '">' . $label . '</a>';
-    }
-    echo '</p>';
-  }
-
-  function show_overlay($id, $db)
-  {
-    $art_sql = "SELECT * FROM images WHERE (id = :img_id )";
-    $art_params = array(
-      ':img_id' => strval($id)
-    );
-    $art_record = exec_sql_query($db, $art_sql, $art_params)->fetchAll(PDO::FETCH_ASSOC)[0];
-    $file = $art_record['id'] . '.' . $art_record['file_ext'];
-    $art_title = $art_record['title'];
-    $description = $art_record['description'];
-    $size = $art_record['width'] . ' x ' . $art_record['height'] . ' in.';
-    $artist_id = $art_record['artist_id'];
-
-    $artist_sql = "SELECT name FROM artists WHERE (id = :id)";
-    $artist_params = array(
-      ':id' => strval($artist_id)
-    );
-    $artist = exec_sql_query($db, $artist_sql, $artist_params)->fetchAll(PDO::FETCH_ASSOC)[0]['name'];
-
-    $tags_sql = "SELECT tags.tag, tags.id FROM tags INNER JOIN image_tags ON image_tags.tag_id = tags.id INNER JOIN images ON image_tags.image_id = images.id WHERE images.id = :imgid";
-    $tags_params = array(
-      ":imgid" => $id
-    );
-    $tags = exec_sql_query($db, $tags_sql, $tags_params)->fetchAll(PDO::FETCH_ASSOC);
-  ?>
-    <div id="overlay-wrapper">
-      <div class="overlay">
-        <div id="Xicon"><a href="index.php"><img class="iconsmall" src="documents/X.png"></a></div>
-        <!-- Original icon made by Cindy Huang -->
-
-        <div class="large-img">
-          <img src="uploads/images/<?php echo $file; ?>">
-        </div>
-        <div class="img-info">
-
-          <div id="settings">
-            <div id="optionsicon">
-              <img class="iconsmall" src="documents/options.png" onclick="showSettings()">
-            </div>
-            <!-- Original icon made by Cindy Huang -->
-
-            <div id="settingscontent">
-              <p class="red">Delete image</p>
-              <p>Add tags</p>
-              <p>Remove tags</p>
-            </div>
-          </div>
-
-
-          <div id="text">
-            <h3>Title</h3>
-            <p><?php echo $art_title; ?></p>
-            <h3>Artist</h3>
-            <p><?php echo $artist; ?></p>
-            <a href="#">
-              <p class="metadata url">cindyhuang.me</p>
-            </a>
-            <p class="metadata"><?php echo $size; ?></p>
-            <?php print_tags($tags); ?>
-            <h3>Artist's Statement</h3>
-            <p><?php echo $description; ?><p>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-  <?php
-  }
   $about_css = "inactive";
   $submit_css = "inactive";
   include("includes/header.php");
@@ -116,10 +37,10 @@ include("includes/head.php");
   // show enlarged image as an overlay
 
   // check for http param
-  if (isset($_GET['img_id'])) {
-    show_overlay(intval($_GET['img_id']), $db);
-    // exit();
-  }
+  // if (isset($_GET['img_id'])) {
+  //   show_overlay(intval($_GET['img_id']), $db);
+  //   // exit();
+  // }
 
   if (isset($_GET['tag_id'])) {
     display_images(get_tag_images(intval($_GET['tag_id']), $db), 3);
@@ -130,8 +51,8 @@ include("includes/head.php");
   ?>
 
   <!-- div to replace with single image overlay -->
-  <div id="replace">
-  </div>
+  <!-- <div id="replace">
+  </div> -->
 
 
 
@@ -171,7 +92,7 @@ include("includes/head.php");
 
         $filename = $image['id'] . "." . $image['file_ext'];
     ?>
-        <a href="index.php?<?php echo http_build_query(array("img_id" => $image['id'])); ?>">
+        <a href="work.php?<?php echo http_build_query(array("img_id" => $image['id'])); ?>">
           <img class="galleryImg" src="uploads/images/<?php echo $filename; ?>"></a>
     <?php }
       echo '</div>';

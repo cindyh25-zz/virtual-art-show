@@ -191,6 +191,36 @@ img.icon {
   border-radius: 8px;
   box-shadow: 0px 2px 4px #cccccc;
 }
+.modal{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transition: opacity 200ms;
+  transition: opacity 200ms;
+}
+.modal:target{
+  opacity:1;
+  pointer-events: all;
+}
+.modalcontent{
+  display:block;
+  position: absolute;
+  margin: 10% auto;
+  padding: 2em 4em;
+  width: auto;
+  top: 25%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  background: #ffffff;
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
 
 /* FORM STYLE */
 
@@ -204,7 +234,10 @@ label{
   display: block;
   margin: 0.5em 0;
 }
-
+#addtagform input, select {
+  display: block;
+  margin: 2em 0;
+}
 input[type="text"], [type="url"], [type="number"]{
   border: none;
   border-bottom: 1px solid #777777;
