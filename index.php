@@ -26,6 +26,16 @@ include("includes/head.php");
     return exec_sql_query($db, "SELECT * FROM images")->fetchAll(PDO::FETCH_ASSOC);
   }
 
+  function get_tags($db, $type_id)
+  {
+    $sql = 'SELECT * FROM tags WHERE type_id = :type_id';
+    $params = array(
+      ':type_id' => $type_id
+    );
+
+    return exec_sql_query($db, $sql, $params)->fetchAll(PDO::FETCH_ASSOC);
+  }
+
 
   $about_css = "inactive";
   $submit_css = "inactive";
@@ -35,7 +45,10 @@ include("includes/head.php");
   <?php
 
   if (isset($_GET['tag_id'])) {
+    echo '<div id="gallery-wrapper">';
+    show_filters($db);
     display_images(get_tag_images(intval($_GET['tag_id']), $db), 3);
+    echo '</div>';
     exit();
   }
 
@@ -55,42 +68,44 @@ include("includes/head.php");
     exec_sql_query($db, $deletesql, $deleteparams);
   }
 
-  ?>
 
-  <!-- div to replace with single image overlay -->
-  <!-- <div id="replace">
-  </div> -->
-
-
-
-
-  <div id="gallery-wrapper">
-    <div id="menuicon"><img class="icon" src="documents/filtericon.png" onclick="showSideMenu()"></div>
-    <!-- Original icon created by Cindy Huang-->
-
-    <!-- tags left column -->
+  function show_filters($db)
+  { ?>
     <div id="sidemenu">
-      <!-- <img class="icon" src="documents/X.png" onclick="hideSideMenu()"> -->
-      <!-- Original icon created by Cindy Huang-->
       <h2>Filter</h2>
       <h3>Class</h3>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 1)); ?>">AP Studio Art</a>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 2)); ?>">Advanced Art Honors</a>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 3)); ?>">Visual Art 1</a>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 4)); ?>">Visual Art 2</a>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 5)); ?>">Foundations of Art</a>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 6)); ?>">Intro to Painting</a>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 7)); ?>">Photography</a>
+      <?php
+      $classes = get_tags($db, 1);
+      foreach ($classes as $class) {
+        echo '<a class="tag inactive" href="index.php?' . http_build_query(array('tag_id' => $class['id'])) . '">' . $class['tag'] . '</a>';
+      }
+      ?>
 
       <h3>Medium</h3>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 8)); ?>">Acrylic</a>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 9)); ?>">Watercolor</a>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 10)); ?>">Pencil</a>
-      <a class="tag inactive" href="index.php?<?php echo http_build_query(array("tag_id" => 11)); ?>">Ink</a>
+      <?php
+      $media = get_tags($db, 2);
+      foreach ($media as $medium) {
+        echo '<a class="tag inactive" href="index.php?' . http_build_query(array('tag_id' => $medium['id'])) . '">' . $medium['tag'] . '</a>';
+      }
+      ?>
 
     </div>
 
+  <?php
+  }
+
+  ?>
+
+
+  <div id="gallery-wrapper">
+
+    <?php show_filters($db); ?>
+
+    <!-- tags left column -->
+
     <?php
+
+
     // display each image in a column
     function display_column($array)
     {
@@ -109,18 +124,19 @@ include("includes/head.php");
     function display_images($records, $num_cols)
     {
       $num_records = count($records);
-      $num_rows = $num_records / $num_cols + 1;
+      $num_rows = max(1, intdiv($num_records, $num_cols));
       $col = 0;
       $col_start = 0;
-      echo '<div class="gallery">';
       while ($col < $num_cols) {
         // dealing with remainders
-        if ($num_records - ($col * $num_rows) < $num_rows) {
-          $num_rows += $num_records - ($col * $num_rows);
+        if (($num_rows < $num_records) && ($num_records < 2 * $num_rows)) {
+          $num_rows = $num_records;
         }
+
         // display one column of images
         display_column(array_slice($records, $col_start, $num_rows));
         $col += 1;
+        $num_records -= $num_rows;
         $col_start += $num_rows;
       }
       echo '</div>';

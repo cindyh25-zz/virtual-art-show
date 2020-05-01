@@ -25,8 +25,20 @@ function showSideMenu() {
 function hideSideMenu() {
 
   document.getElementById("sidemenu").style.display = "none";
+  document.getElementById("menuicon").style.display = "block";
 }
 
 function showSettings() {
   document.getElementById("settingscontent").style.display = "inline-block";
+}
+
+function showModal(modal) {
+  document.getElementById(modal).style.display = "block";
+  document.getElementById(modal).style.zindex = "500";
+  document.getElementById('settingscontent').style.display = "none";
+}
+
+function closeModal(modal) {
+  alert('hi');
+  document.getElementById(modal).style.display = "none";
 }

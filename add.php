@@ -94,10 +94,9 @@ include("includes/head.php");
 
   ?>
 
-
-  <h2>Submit Your Artwork</h2>
-
   <div id="addformwrapper">
+    <h2>Submit Your Artwork</h2>
+
     <form id="addform" method="POST" action="add.php" enctype="multipart/form-data" novalidate>
       <div class="forminput">
         <input type="hidden" name="MAX_FILE_SIZE" VALUE="1000000" />
