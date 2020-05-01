@@ -14,23 +14,13 @@ include("includes/head.php");
   $about_css = "inactive";
   $submit_css = "active";
 
-  // $class_tags = get_tags($db, 1);
-  // $media_tags = get_tags($db, 2);
+
 
   include("includes/header.php");
 
-  function get_tags_of_type($db, $type_id)
-  {
-    $sql = 'SELECT * FROM tags WHERE type_id = :type_id';
-    $params = array(
-      ':type_id' => $type_id
-    );
+  $class_tags = get_tags($db, 1);
+  $media_tags = get_tags($db, 2);
 
-    return exec_sql_query($db, $sql, $params)->fetchAll(PDO::FETCH_ASSOC);
-  }
-
-  $class_tags = get_tags_of_type($db, 1);
-  $media_tags = get_tags_of_type($db, 2);
 
   function display_tags_radio($tags)
   {
@@ -53,7 +43,7 @@ include("includes/head.php");
     }
   }
 
-  function get_tags()
+  function tags_to_insert()
   {
     $tags = array();
     if (!empty($_POST['class'])) {
@@ -94,30 +84,33 @@ include("includes/head.php");
       $contact = (!empty($_POST['portfolio']) ? filter_var($_POST['portfolio'], FILTER_SANITIZE_URL) : NULL);
       $art_width = (!empty($_POST['width']) ? filter_var($_POST['width'], FILTER_SANITIZE_NUMBER_FLOAT) : NULL);
       $art_height = (!empty($_POST['height']) ? filter_var($_POST['height'], FILTER_SANITIZE_NUMBER_FLOAT) : NULL);
+
       // insert info into db
-      $artist_sql = "INSERT INTO artists (name) VALUES (:artist_name) ";
-      $artist_params = array(':artist_name' => $artist_name);
-      exec_sql_query($db, $artist_sql, $artist_params);
+      // $artist_sql = "INSERT INTO artists (name) VALUES (:artist_name) ";
+      // $artist_params = array(':artist_name' => $artist_name);
+      // exec_sql_query($db, $artist_sql, $artist_params);
+      insert_artist($db, $artist_name);
       $artist_id = $db->lastInsertId("id");
 
-      $img_sql = "INSERT INTO images (file_name, file_ext, artist_id, title, width, height, description, contact) VALUES (:file_name, :file_ext, :artist_id, :title, :width, :height, :description, :contact)";
-      $img_params = array(
-        ':file_name' => $file_name,
-        ':file_ext' => $file_ext,
-        ':artist_id' => $artist_id,
-        ":title" => $art_title,
-        ':width' => $art_width,
-        ':height' => $art_height,
-        ':description' => $description,
-        ':contact' => $contact
-      );
-      exec_sql_query($db, $img_sql, $img_params);
+      // $img_sql = "INSERT INTO images (file_name, file_ext, artist_id, title, width, height, description, contact) VALUES (:file_name, :file_ext, :artist_id, :title, :width, :height, :description, :contact)";
+      // $img_params = array(
+      //   ':file_name' => $file_name,
+      //   ':file_ext' => $file_ext,
+      //   ':artist_id' => $artist_id,
+      //   ":title" => $art_title,
+      //   ':width' => $art_width,
+      //   ':height' => $art_height,
+      //   ':description' => $description,
+      //   ':contact' => $contact
+      // );
+      // exec_sql_query($db, $img_sql, $img_params);
+      insert_image($db, $file_name, $file_ext, $artist_id, $art_title, $art_width, $art_height, $description, $contact);
       $img_id = $db->lastInsertId("id");
       $new_path = "uploads/images/" . $img_id . "." . $file_ext;
       move_uploaded_file($upload_info["tmp_name"], $new_path);
 
       // add image tags
-      $tags = get_tags();
+      $tags = tags_to_insert();
       insert_image_tags($tags, $img_id, $db);
     } else {
       echo 'Image failed to upload. Please try again!';

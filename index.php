@@ -11,30 +11,6 @@ include("includes/head.php");
 
   <?php
 
-  function get_tag_images($tag_id, $db)
-  {
-    $sql = "SELECT images.id, images.file_ext FROM images INNER JOIN image_tags ON image_tags.image_id = images.id INNER JOIN tags ON image_tags.tag_id = tags.id WHERE image_tags.tag_id = :tag_id";
-    $params = array(
-      ":tag_id" => $tag_id
-    );
-
-    return exec_sql_query($db, $sql, $params)->fetchAll(PDO::FETCH_ASSOC);
-  }
-
-  function get_all_images($db)
-  {
-    return exec_sql_query($db, "SELECT * FROM images")->fetchAll(PDO::FETCH_ASSOC);
-  }
-
-  function get_tags($db, $type_id)
-  {
-    $sql = 'SELECT * FROM tags WHERE type_id = :type_id';
-    $params = array(
-      ':type_id' => $type_id
-    );
-
-    return exec_sql_query($db, $sql, $params)->fetchAll(PDO::FETCH_ASSOC);
-  }
 
 
   $about_css = "inactive";
@@ -55,17 +31,18 @@ include("includes/head.php");
   // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (isset($_POST['delete'])) {
     $deleteid = filter_input(INPUT_POST, 'delete', FILTER_SANITIZE_NUMBER_INT);
-    $deletesql = 'DELETE FROM images WHERE id = :id';
-    $deleteparams = array(
-      ':id' => $deleteid
-    );
-    exec_sql_query($db, $deletesql, $deleteparams);
+    delete_image_with_id($db, $deleteid);
+    // $deletesql = 'DELETE FROM images WHERE id = :id';
+    // $deleteparams = array(
+    //   ':id' => $deleteid
+    // );
+    // exec_sql_query($db, $deletesql, $deleteparams);
 
-    $deletetagsql = 'DELETE FROM image_tags WHERE image_id = :id';
-    $deletetagparams = array(
-      ':id' => $deleteid
-    );
-    exec_sql_query($db, $deletesql, $deleteparams);
+    // $deletetagsql = 'DELETE FROM image_tags WHERE image_id = :id';
+    // $deletetagparams = array(
+    //   ':id' => $deleteid
+    // );
+    // exec_sql_query($db, $deletesql, $deleteparams);
   }
 
 

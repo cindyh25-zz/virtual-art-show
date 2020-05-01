@@ -10,19 +10,14 @@
 
   if (isset($_GET['img_id'])) {
     $id = intval($_GET['img_id']);
-    $alltags_sql = "SELECT * FROM tags";
-    $all_tags = exec_sql_query($db, $alltags_sql)->fetchAll(PDO::FETCH_ASSOC);
+    $all_tags = get_all_tags($db);
   }
 
   if (isset($_POST['deleted'])) {
     $deleted = $_POST['deleted'];
     if (!empty($deleted)) {
       foreach ($deleted as $tag) {
-        $deletesql = 'DELETE FROM image_tags WHERE tag_id = :id';
-        $deleteparams = array(
-          ':id' => $tag
-        );
-        exec_sql_query($db, $deletesql, $deleteparams);
+        delete_imagetag_with_tagid($db, $tag);
       }
     }
   }
@@ -31,8 +26,7 @@
   if (isset($_POST['addtag'])) {
     $addtagid = trim(filter_input(INPUT_POST, 'addtag', FILTER_SANITIZE_NUMBER_INT));
     if (!empty($addtagid)) {
-      $current_sql = 'SELECT tag_id FROM image_tags WHERE image_id = :id';
-      $current_tagids = exec_sql_query($db, $current_sql, array(':id' => $id))->fetchAll(PDO::FETCH_ASSOC);
+      $current_tagids = current_tags_of_image($db, $id);
       $isduplicate = false;
       foreach ($current_tagids as $currtagid) {
         if ($currtagid['tag_id'] == $addtagid) {
@@ -42,12 +36,7 @@
       }
 
       if (!$isduplicate) {
-        $addtagsql = 'INSERT INTO image_tags (image_id, tag_id) VALUES (:image_id, :tag_id)';
-        $addtagparams = array(
-          ':image_id' => $id,
-          ':tag_id' => $addtagid
-        );
-        exec_sql_query($db, $addtagsql, $addtagparams);
+        insert_image_tag($db, $id, $addtagid);
       }
     }
   }
@@ -58,15 +47,7 @@
     $type = filter_input(INPUT_POST, 'tagtype', FILTER_SANITIZE_NUMBER_INT);
 
     if (!(empty($newtag)) && !(empty($type))) {
-      $newtagsql = 'INSERT INTO tags (tag, type_id) VALUES (:tag, :type)';
-      exec_sql_query($db, $newtagsql, array(':tag' => $newtag, ':type' => $type));
-      $tag_id = $db->lastInsertId("id");
-      $newimgtag_sql = 'INSERT INTO image_tags (image_id, tag_id) VALUES (:img_id, :tag_id)';
-      $newimgtag_params = array(
-        ':img_id' => $id,
-        ':tag_id' => $tag_id
-      );
-      exec_sql_query($db, $newimgtag_sql, $newimgtag_params);
+      create_tag($db, $id, $newtag, $type);
     } else {
       echo 'Please specify the tag name and type of tag you are adding.';
     }
@@ -86,11 +67,8 @@
 
 
 
-  $art_sql = "SELECT * FROM images WHERE (id = :img_id )";
-  $art_params = array(
-    ':img_id' => strval($id)
-  );
-  $art_record = exec_sql_query($db, $art_sql, $art_params)->fetchAll(PDO::FETCH_ASSOC)[0];
+
+  $art_record = get_image_with_id($db, $id);
   $file = $art_record['id'] . '.' . $art_record['file_ext'];
   $art_title = $art_record['title'];
   $description = $art_record['description'];
@@ -100,17 +78,10 @@
   $portfolio = $art_record['contact'];
   $artist_id = $art_record['artist_id'];
 
-  $artist_sql = "SELECT name FROM artists WHERE (id = :id)";
-  $artist_params = array(
-    ':id' => strval($artist_id)
-  );
-  $artist = exec_sql_query($db, $artist_sql, $artist_params)->fetchAll(PDO::FETCH_ASSOC)[0]['name'];
+  $artist = get_artist_with_id($db, $artist_id);
 
-  $tags_sql = "SELECT tags.tag, tags.id FROM tags INNER JOIN image_tags ON image_tags.tag_id = tags.id INNER JOIN images ON image_tags.image_id = images.id WHERE images.id = :imgid";
-  $tags_params = array(
-    ":imgid" => $id
-  );
-  $tags = exec_sql_query($db, $tags_sql, $tags_params)->fetchAll(PDO::FETCH_ASSOC);
+
+  $tags = get_tags_of_image($db, $id);
   ?>
 
 
