@@ -25,7 +25,7 @@ include("includes/head.php");
     if ($success) { ?>
       <h2 class="feedback"> Successfully added! 🎉</h2>
       <div class="feedback">
-        <a href="add.php" class="button primary"> View it in the gallery</a>
+        <a href="index.php" class="button primary"> View it in the gallery</a>
         <a href="add.php" class="button"> Add another piece</a>
       </div>
     <?php
