@@ -23,18 +23,6 @@
           ':id' => $tag
         );
         exec_sql_query($db, $deletesql, $deleteparams);
-
-        // $gettagsql = 'SELECT * FROM image_tags WHERE tag_id = :id';
-        // $gettagparams = array(':id' => $tag);
-        // $num_imgs = count(exec_sql_query($db, $gettagsql, $gettagparams)->fetchAll(PDO::FETCH_ASSOC));
-
-        // if ($num_imgs == 0) {
-        //   $deletetagsql = 'DELETE FROM tags WHERE id = :id';
-        //   $deletetagparams = array(
-        //     ':id' => $tag
-        //   );
-        //   exec_sql_query($db, $deletetagsql, $deletetagparams);
-        // }
       }
     }
   }
@@ -67,9 +55,11 @@
 
   if (isset($_POST['newtag'])) {
     $newtag = trim(ucwords(filter_input(INPUT_POST, 'newtag', FILTER_SANITIZE_STRING)));
-    if (!empty($newtag)) {
+    $type = filter_input(INPUT_POST, 'tagtype', FILTER_SANITIZE_NUMBER_INT);
+
+    if (!(empty($newtag)) && !(empty($type))) {
       $newtagsql = 'INSERT INTO tags (tag, type_id) VALUES (:tag, :type)';
-      exec_sql_query($db, $newtagsql, array(':tag' => $newtag, ':type' => 2));
+      exec_sql_query($db, $newtagsql, array(':tag' => $newtag, ':type' => $type));
       $tag_id = $db->lastInsertId("id");
       $newimgtag_sql = 'INSERT INTO image_tags (image_id, tag_id) VALUES (:img_id, :tag_id)';
       $newimgtag_params = array(
@@ -77,6 +67,8 @@
         ':tag_id' => $tag_id
       );
       exec_sql_query($db, $newimgtag_sql, $newimgtag_params);
+    } else {
+      echo 'Please specify the tag name and type of tag you are adding.';
     }
   }
 
@@ -130,7 +122,7 @@
       <div class="modalcontent">
         <div id="Xicon"><img class="iconsmall" src="documents/X.png" onclick="closeModal('deletemodal')"></div>
         <!-- Original icon made by Cindy Huang -->
-        <p>Are you sure you want to delete this artwork?</p>
+        <h3>Are you sure you want to delete this artwork?</h3>
         <form method="post" id="deleteform" action="index.php">
           <button name='delete' value="<?php echo $id; ?>">I'm sure</button>
         </form>
@@ -141,10 +133,10 @@
       <div class="modalcontent">
         <!-- <div class="darkoverlay"></div> -->
 
-        <div id="Xicon"><img class="iconsmall" src="documents/X.png" onclick="closeModal('addtagmodal')"></div>
+        <div id="Xicon"><a href="#"><img class=" iconsmall" src="documents/X.png"></a></div>
         <!-- Original icon made by Cindy Huang -->
         <form method="post" id="addtagform" action="work.php?<?php echo http_build_query(array("img_id" => $id)); ?>">
-          <p>Add an existing tag to this artwork</p>
+          <h3>Add an existing tag to this artwork</h3>
           <select name="addtag" id="tagselect">
             <option value="" id="emptyoption">Select an existing tag</option>
             <?php
@@ -153,8 +145,21 @@
             }
             ?>
           </select>
-          <p>Or, make a new tag</p>
+          <h3>Or, make a new tag</h3>
           <input type="text" name="newtag" id="newtagbox">
+          <p>Select what type of tag this is</p>
+          <div>
+            <div class="radio-row">
+              <input type="radio" value="1" name="tagtype" id="classradio">
+              <label for="classradio" class="radiolabel">A class</label>
+            </div>
+
+            <div class="radio-row">
+              <input type="radio" value="2" name="tagtype" id="mediumradio">
+              <label for="mediumradio" class="radiolabel">An art medium</label>
+            </div>
+          </div>
+
           <input type="submit" value="Add">
         </form>
       </div>
@@ -165,7 +170,7 @@
         <div id="Xicon"><img class="iconsmall" src="documents/X.png" onclick="closeModal('deletetagmodal')"></div>
         <!-- Original icon made by Cindy Huang -->
         <form method="post" id="deletetagform" action="work.php?<?php echo http_build_query(array("img_id" => $id)); ?>">
-          <p>Delete tags</p>
+          <h3>Delete tags</h3>
 
           <?php
           foreach ($tags as $tag) {

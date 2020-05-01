@@ -4,6 +4,7 @@
 <?php
 include("includes/init.php");
 include("includes/head.php");
+//include("includes/queries.php");
 ?>
 
 <body>
@@ -12,7 +13,36 @@ include("includes/head.php");
   <?php
   $about_css = "inactive";
   $submit_css = "active";
+
+  // $class_tags = get_tags($db, 1);
+  // $media_tags = get_tags($db, 2);
+
   include("includes/header.php");
+
+  function get_tags_of_type($db, $type_id)
+  {
+    $sql = 'SELECT * FROM tags WHERE type_id = :type_id';
+    $params = array(
+      ':type_id' => $type_id
+    );
+
+    return exec_sql_query($db, $sql, $params)->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  $class_tags = get_tags_of_type($db, 1);
+  $media_tags = get_tags_of_type($db, 2);
+
+  function display_tags_radio($tags)
+  {
+    foreach ($tags as $tag) {
+      $name = $tag['tag'];
+      $tagid = $tag['id'];
+      echo '<div class="radio-row">';
+      echo '<input type="radio" name="class" id="' . $name . '" value="' . $tagid . '" />';
+      echo '<label for="' . $name . '" class="radiolabel">' . $name . '</label>';
+      echo '</div>';
+    }
+  }
 
   function filter_text($input, $output)
   {
@@ -49,6 +79,8 @@ include("includes/head.php");
       exec_sql_query($db, $sql, $params);
     }
   }
+
+  /// need to add new tags and do feedback
 
   if (isset($_POST['upload_submit'])) {
     $upload_info = $_FILES["art_file"];
@@ -88,7 +120,7 @@ include("includes/head.php");
       $tags = get_tags();
       insert_image_tags($tags, $img_id, $db);
     } else {
-      // deal with fail to upload
+      echo 'Image failed to upload. Please try again!';
     }
   }
 
@@ -123,57 +155,23 @@ include("includes/head.php");
       </div>
 
       <div class="forminput" id="tags">
+
         <div class="inline-block" id="class">
           <label>Class</label>
-          <div class="radio-row">
-            <input type="radio" name="class" id="ap" value="1" />
-            <label for="ap" class="radiolabel">AP Studio Art</label>
-          </div>
-          <div class="radio-row">
-            <input type="radio" name="class" id="aah" value="2" />
-            <label for="aah" class="radiolabel">Advanced Art Honors</label>
-          </div>
-          <div class="radio-row">
-            <input type="radio" name="class" id="vis1" value="3" />
-            <label for="vis1" class="radiolabel">Visual Art 1</label>
-          </div>
-          <div class="radio-row">
-            <input type="radio" name="class" id="vis2" value="4" />
-            <label for="vis2" class="radiolabel">Visual Art 2</label>
-          </div>
-          <div class="radio-row">
-            <input type="radio" name="class" id="foundations" value="5" />
-            <label for="foundations" class="radiolabel">Foundations of Art</label>
-          </div>
-          <div class="radio-row">
-            <input type="radio" name="class" id="painting" value="6" />
-            <label for="painting" class="radiolabel">Intro to Painting</label>
-          </div>
 
+          <?php
+          display_tags_radio($class_tags)
+          ?>
+
+          <input type="text" name="newclass" placeholder="Other" class="fullwidth">
         </div>
 
-        <div class=" inline-block" id="medium">
+        <div class="inline-block" id="medium">
           <label>Medium</label>
-          <div class="checkbox-row">
-            <input type="checkbox" id="photography" name="medium[]" value="7">
-            <label for="photography" class="radiolabel">Photography</label>
-          </div>
-          <div class="checkbox-row">
-            <input type="checkbox" id="acrylic" name="medium[]" value="8">
-            <label for="acrylic" class="radiolabel">Acrylic</label>
-          </div>
-          <div class="checkbox-row">
-            <input type="checkbox" id="watercolor" name="medium[]" value="9">
-            <label for="watercolor" class="radiolabel">Watercolor</label>
-          </div>
-          <div class="checkbox-row">
-            <input type="checkbox" id="pencil" name="medium[]" value="10">
-            <label for="pencil" class="radiolabel">Pencil</label>
-          </div>
-          <div class="checkbox-row">
-            <input type="checkbox" id="ink" name="medium[]" value="11">
-            <label for="ink" class="radiolabel">Ink</label>
-          </div>
+
+          <?php display_tags_radio($media_tags); ?>
+
+          <input type="text" name="newmedium" placeholder="Other" class="fullwidth">
 
         </div>
       </div>

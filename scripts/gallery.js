@@ -39,6 +39,5 @@ function showModal(modal) {
 }
 
 function closeModal(modal) {
-  alert('hi');
   document.getElementById(modal).style.display = "none";
 }
