@@ -12,6 +12,14 @@ h1#pagetitle{
 h3 {
   margin: 1.5em 0 0 0;
 }
+.feedback {
+  text-align: center;
+  width: 40%;
+  margin: 4em auto;
+}
+.red{
+  color: #db0f0f
+}
 a:visited{
   color: inherit;
 }
@@ -32,16 +40,20 @@ p {
 .tag{
   display: block;
   padding: 0.5em 1em;
-  text-decoration:underline;
 }
 .tag.inactive{
-
+  color: #777777
 }
-
 .tag.active{
   font-weight: bold;
 }
-
+.tag:hover{
+  color: black;
+}
+.tag:target{
+  color: black;
+  font-weight:bold;
+}
 
 /* SITE STRUCTURE */
 .topnav {
@@ -144,7 +156,7 @@ p {
     left: 0;
     height: 100%;
     padding: 1em 2em;
-    background-color: #fafafa;
+    background-color: #f5f5f5;
     border-radius: 8px;
     box-shadow: 2px 2px 4px #cccccc;
   }
@@ -175,12 +187,13 @@ img.icon {
 #settings {
   position: absolute;
   right: 2em;
+  z-index: 1;
 }
 
 #settingscontent {
-  background-color: #ededed;
+  background-color: #f5f5f5;
   position: relative;
-  z-index: 100;
+  z-index: 1;
   display: none;
   padding: 0.5em 1.5em;
   border-radius: 8px;
@@ -188,6 +201,7 @@ img.icon {
 }
 .modal{
   position: fixed;
+  z-index:100;
   top: 0;
   right: 0;
   bottom: 0;
@@ -196,7 +210,7 @@ img.icon {
   opacity: 0;
   -webkit-transition: opacity 200ms;
   transition: opacity 200ms;
-  background-color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .modal:target{
@@ -205,12 +219,12 @@ img.icon {
 }
 
 .modalcontent {
-  width: 400px;
   display:block;
   position: absolute;
+
   margin: 10% auto;
-  padding: 2rem;
-  width: 40%;
+  padding: 2em 4em;
+  width: auto;
   top: 25%;
   left: 50%;
   -webkit-transform: translateX(-50%) translateY(-50%);
@@ -220,20 +234,19 @@ img.icon {
   box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
 }
-
-.darkoverlay{
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+.modalcontent h3{
+  text-align: center;
 }
+
 .cursor{
   cursor: pointer;
 }
-
 .worktags{
   margin-top:2em;
 }
-
+.aboutcontent{
+  margin: 4em 8em;
+}
 /* FORM STYLE */
 
 .forminput {
@@ -279,13 +292,21 @@ input.smallinput {
   width: 120px;
 }
 
-input[type="submit"] {
+input[type="submit"], button, .button {
   background-color: white;
   border: 2px solid #000000;
   padding: 1em 2em;
   width: auto;
   font-weight: bold;
   border-radius: 4px;
+}
+.button.primary{
+  color: white;
+  background-color: black;
+}
+.modalcontent input[type="submit"], button{
+  margin: 2em auto;
+    display: block;
 }
 input[type='radio'], [type='checkbox'] {
   float: left;
@@ -315,4 +336,9 @@ label.radiolabel {
 }
 .fullwidth{
   width:100%;
+}
+.modalcontent input, select, .newtaginput{
+  display: block;
+  margin-left:auto;
+  margin-right: auto;
 }

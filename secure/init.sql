@@ -144,29 +144,6 @@ INSERT INTO images (
 VALUES
   (
     5,
-    "5.jpg",
-    "jpg",
-    "Mural",
-    1,
-    "11",
-    "14",
-    "A nice painting on the wall",
-    "cindyhuang.me"
-  );
-INSERT INTO images (
-    id,
-    file_name,
-    file_ext,
-    title,
-    artist_id,
-    width,
-    height,
-    description,
-    contact
-  )
-VALUES
-  (
-    6,
     "6.jpg",
     "jpg",
     "~Reflections~",
@@ -189,7 +166,7 @@ INSERT INTO images (
   )
 VALUES
   (
-    7,
+    6,
     "7.jpg",
     "jpg",
     "Playground",
@@ -212,7 +189,7 @@ INSERT INTO images (
   )
 VALUES
   (
-    8,
+    7,
     "8.jpg",
     "jpg",
     "Roses",
@@ -235,7 +212,7 @@ INSERT INTO images (
   )
 VALUES
   (
-    9,
+    8,
     "9.jpg",
     "jpg",
     "Succulents",
@@ -258,7 +235,7 @@ INSERT INTO images (
   )
 VALUES
   (
-    10,
+    9,
     "10.jpg",
     "jpg",
     "Tunnel Book",
@@ -266,6 +243,29 @@ VALUES
     "6",
     "4",
     "Paper book",
+    "cindyhuang.me"
+  );
+INSERT INTO images (
+    id,
+    file_name,
+    file_ext,
+    title,
+    artist_id,
+    width,
+    height,
+    description,
+    contact
+  )
+VALUES
+  (
+    10,
+    "5.jpg",
+    "jpg",
+    "Mural",
+    1,
+    "11",
+    "14",
+    "A nice painting on the wall",
     "cindyhuang.me"
   );
 -- TAG TYPES

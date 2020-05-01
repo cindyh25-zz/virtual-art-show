@@ -78,8 +78,12 @@ It also follows existing design patterns for the single image view of having the
   - Type: POST, form
 - Request: delete an artwork
   - Type: POST, form
-- Request: view images with certain tags
+- Request: delete a tag from artwork
   - Type: POST, form
+- Request: add a tag to artwork
+  - Type: POST, form
+- Request: view images with certain tags
+  - Type: GET, link with string param
 
 
 
@@ -159,7 +163,7 @@ images.artist_id = artists.id WHERE images.id = image_id;
 ```
 - Select tags for an image with `id = image_id`
 ```
-SELECT tags.name FROM tags INNER JOIN image_tags ON image_tags.tag_id = tags.id INNER JOIN images ON image_tags.image_id = images.id;
+SELECT tags.tag, tags.id FROM tags INNER JOIN image_tags ON image_tags.tag_id = tags.id INNER JOIN images ON image_tags.image_id = images.id WHERE images.id = :image_id;
 ```
 - Select images with certain tag
 ```
@@ -178,6 +182,20 @@ DELETE FROM images WHERE id = id;
 
 DELETE FROM image_tags WHERE image_id = id;
 ```
+- Add tag to image
+```
+INSERT INTO image_tags (image_id, tag_id) VALUES (:image_id, :tag_id);
+```
+- Create new tag
+```
+INSERT INTO tags (tag, type_id) VALUES (:tag, :type);
+```
+- Select tags of a certain type
+```
+SELECT * FROM tags WHERE type_id = :type_id;
+```
+
+
 
 ## Code Planning (Milestone 1)
 > Plan what top level PHP pages you'll need.
@@ -193,15 +211,28 @@ Filters for tags will be implemented in the home page and shown/hidden using Jav
 
 I plan to use a partial for the header and footer.
 
-I'm not sure if I will need to reuse other code in separate pages, so those may be the only partials.
-
+I will also write PHP code for SQL queries in init.php so that the code for the actual web pages will be cleaner and more readable.
 > Plan any PHP code you'll need.
 
-Example:
-```
-Put all code in between the sets of backticks: ``` code here ```
-```
+Home page:
+- reuse the topnav and header
+- query all images
+- iterate through images and separate into arrays for each column with as close to even number of images in each
+- display each image in the column
+- each image has an href to the `work.php` with string parameters in the url with the image id
 
+Single image view:
+- if there was a GET request, get the image id from the string parameters
+- from that, query all the information about the image
+- display using HTML/CSS/PHP
+
+Delete image, tag, or add tag:
+- each option in the settings menu links to a modal popup with a form
+- select options in the form and click submit, which sends post request to `index.php` or `work.php`
+- execute correct query with information input
+
+Insert image:
+- check if there was a post request, use form inputs to insert into correct databases
 
 # Complete & Polished Website (Final Submission)
 
@@ -210,37 +241,58 @@ Put all code in between the sets of backticks: ``` code here ```
 > For each set of instructions, assume the grader is starting from index.php.
 
 Viewing all images in your gallery:
-1.
-2.
+1. Scroll down on the home page to view all images
+2. Return to full gallery at any time by clicking the page header (Virtual Art Show)
 
 View all images for a tag:
-1.
-2.
+1. Choose a tag in the menu on the left
+2. All images for the tag will appear
+3. Click the page title to go back to full gallery
 
 View a single image and all the tags for that image:
-1.
-2.
+1. Click on an image in the gallery
+2. View image larger with details on the right
+3. Click on a link for the tags to go to images with that tag
+4. Click the X in the top right to go back to the gallery
 
 How to upload a new image:
-1.
-2.
+1. Click the Submit Artwork tab in the top navigation
+2. Upload the file and enter any additional details (all are optional)
+3. Add tags by selecting the radio buttons or checkboxes or inputting a new tag
+4. Click submit
+5. Return to gallery to see the uploaded image
 
 How to delete an image:
-1.
-2.
+1. Click an image to view full details
+2. Click the options menu (the three dots on the right side)
+3. Choose "Delete image"
+4. Confirm by saying "I'm Sure"
 
 How to view all tags at once:
-1.
-2.
+1. All tags are in the filters menu on the left side
 
 How to add a tag to an existing image:
-1.
-2.
+1. Click an image to view full details
+2. Click the options menu (the three dots on the right side)
+3. Choose "Add tag"
+4. To add an existing tag, choose from the select and click Add Tag.
+5. To add a new tag, enter the name in the text input (the line).
+6. You must select the category for the new tag, either a class name or art medium.
+7. Click Add Tag to finish
+8. The new tag should be listed in the image details!
 
 How to remove a tag from an existing image:
-1.
-2.
+1. Click an image to view full details
+2. Click the options menu (the three dots on the right side)
+3. Choose "Remove tags"
+4. Check the checkboxes for the tags you want to remove
+5. Click "Remove"
+6. The tags you chose should be removed from the image details!
 
 
 ## Reflection (Final Submission)
 > Take this time to reflect on what you learned during this assignment. How have you improved since starting this class?
+
+This assignment challenged me a lot, since there were a lot of moving parts and backend logic. However, it was really fun and rewarding to create the image gallery, since my idea was something that I actually cared about and could see being an actual website that people use! It was also cool to combine knowledge about forms, HTTP requests, and SQL queries to create the functionality that I wanted. I learned a lot about the HTML/CSS and visual design, and so much about databases and SQL queries!
+
+It was really cool to see it coming together, and I feel like I improved on all aspects of web development.
