@@ -97,7 +97,6 @@ include("includes/head.php");
   if (isset($_POST['upload_submit'])) {
     $upload_info = $_FILES["art_file"];
     if ($upload_info['error'] == UPLOAD_ERR_OK) { //successful upload
-      show_feedback(true);
       // filter inputs
       $file_name = basename($upload_info['name']);
       $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
@@ -128,6 +127,7 @@ include("includes/head.php");
       }
       $tags = tags_to_insert();
       insert_image_tags($tags, $img_id, $db);
+      show_feedback(true);
     } else {
       show_feedback(false);
     }
