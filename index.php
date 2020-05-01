@@ -54,7 +54,7 @@ include("includes/head.php");
         if ($class['id'] == $activeid) {
           $activecss = 'active';
         }
-        echo '<a class="tag ' . $activecss . '" href="index.php?' . http_build_query(array('tag_id' => $class['id'])) . '">' . $class['tag'] . '</a>';
+        echo '<a class="tag ' . $activecss . '" href="index.php?' . http_build_query(array('tag_id' => $class['id'])) . '">' . htmlspecialchars($class['tag']) . '</a>';
       }
       ?>
 
@@ -66,7 +66,7 @@ include("includes/head.php");
         if ($medium['id'] == $activeid) {
           $activecss = 'active';
         }
-        echo '<a class="tag ' . $activecss . '" href="index.php?' . http_build_query(array('tag_id' => $medium['id'])) . '">' . $medium['tag'] . '</a>';
+        echo '<a class="tag ' . $activecss . '" href="index.php?' . http_build_query(array('tag_id' => $medium['id'])) . '">' . htmlspecialchars($medium['tag']) . '</a>';
       }
       ?>
 

@@ -113,7 +113,7 @@
             <option value="" id="emptyoption">Select an existing tag</option>
             <?php
             foreach ($all_tags as $tag) {
-              echo '<option value="' . $tag['id'] . '">' . $tag['tag'] . '</option>';
+              echo '<option value="' . $tag['id'] . '">' . htmlspecialchars($tag['tag']) . '</option>';
             }
             ?>
           </select>
@@ -149,7 +149,7 @@
           foreach ($tags as $tag) {
             echo '<div class="checkbox-row">';
             echo '<input type="checkbox" id="' . $tag['tag'] . '" name="deleted[]" value="' . $tag['id'] . '">';
-            echo '<label for="' . $tag['tag'] . '">' . $tag['tag'] . '</label>';
+            echo '<label for="' . $tag['tag'] . '">' . htmlspecialchars($tag['tag']) . '</label>';
             echo '</div>';
           }
           ?>
