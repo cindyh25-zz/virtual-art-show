@@ -1,13 +1,5 @@
-# Project 3
+# Virtual Art Show
 
-See the course web page for the project's requirements.
+Designed and developed to continue showcasing student artwork despite physical distancing and quarantine. 🖼
 
-# Submission Instructions
-
-See the respective **submit-_milestone_.md** file for each submission.
-
-| Submission  | Instructions                       |
-| ----------- | ---------------------------------- |
-| Milestone 1 | [submit-m1.md](submit-m1.md)   |
-| Milestone 2 | [submit-m2.md](submit-m2.md)   |
-| Final       | [submit-FINAL.md](submit-FINAL.md) |
+Thanks to INFO 2300 course staff!
